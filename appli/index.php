@@ -72,6 +72,12 @@ function optionItem():string{
                 </label>
             </p>
             <p>
+                <div>
+                    <label for="formFileLg" class="form-label">Image du produit :</label>
+                    <input class="form-control form-control-lg" id="formFileLg" type="file" name="image">
+                </div>
+            </p>
+            <p>
                 <button type="submit" class="btn btn-primary">Ajouter l'Objet</button>
             </p>
         </form>

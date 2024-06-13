@@ -28,7 +28,7 @@
             $htmlContent .= "<td>".number_format($product['price'],2,","," ")." €</td>";
             $htmlContent .= '<td><a href="./traitement.php?action=down-qtt&indice='.$id.'"><i class="fa-solid fa-minus" style="color: #ff2929;"></i></a>'.$product['qtt'].'<a href="./traitement.php?action=up-qtt&indice='.$id.'"><i class="fa-solid fa-plus" style="color: #2cce3f;"></i></a></td>';
             $htmlContent .= "<td>".number_format($product['total'],2,","," ")." €</td>";
-            $htmlContent .= '<td><a href="./traitement.php?action=delete&indice='.$id.'"><i class="fa-solid fa-xmark" style="color: #ff2929;"></i></a></td>';
+            $htmlContent .= '<td><a href="./traitement.php?action=delete&indice='.$id.'"><i class="fa-solid fa-xmark" style="color: #ff2929;"></i></a><a href="./traitement.php?indice='.$id.'"><i class="fa-solid fa-magnifying-glass"></i></a></td>';
             $totalGen+=$product['total'];
             $qttTotal+=$product['qtt'];
             $htmlContent.="</tr>";
@@ -65,6 +65,8 @@
         echo "<p>Aucun produit disponible pour l'instant ... </p>";
     }else {
         echo createTabHtml();
+        echo $_SESSION["product"][0]["photo"];
+        echo "<img src\"".$_SESSION["product"][0]["photo"]["tmp_name"]."\"></img>";
     }
     
 
