@@ -91,6 +91,16 @@ HTML;
             </p>
         </form>
 HTML;
+            }elseif ($action=="clear"){
+                echo <<<HTML
+            <form action="traitement.php?action=clear" method="post">
+                <label for="">Etes vous sur de vouloir tout supprimer ?</label>
+                <div class="input-goup mb-3">
+                    
+                    <button type="submit" name="submit" class="btn btn-primary">Supprimer tout</button>
+                </div>
+            </form>
+HTML;
             }
         }?>
 

@@ -32,7 +32,7 @@ if(isset($_POST['submit'])){
             header("Location:index.php?action=delete");
             break;
         case 'clear':
-            //code
+            $_SESSION['product']=[];
             break;
         case 'up-qtt':
             //code
