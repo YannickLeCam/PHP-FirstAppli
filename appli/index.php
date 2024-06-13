@@ -43,6 +43,7 @@ function optionItem():string{
     </head>
     <body>
         <?php
+            require 'elements/nav.php';
             if (isset($messageError)) {
                 echo '<div class="alert alert-danger" role="alert">'.$messageError.'</div>';
             }

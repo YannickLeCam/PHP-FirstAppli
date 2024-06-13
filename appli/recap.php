@@ -41,6 +41,7 @@
 <body>
 
     <?php
+    require 'elements/nav.php';
     //verification de l'existance de Serve'' sinon redrect to index
     if (!isset($_SESSION["product"]) || empty($_SESSION['product']) ) {
         echo "<p>Aucun produit disponible pour l'instant ... </p>";
