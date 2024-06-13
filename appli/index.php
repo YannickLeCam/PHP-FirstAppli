@@ -52,27 +52,6 @@ function optionItem():string{
             }
         ?>
         <h1>Ajouter un produit</h1>
-        <form action="" method="get">
-            <p class="">
-                <label for="">Action que vous voulez faire :</label>
-                <div class="input-group mb-3">
-                    <select name="action" class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                        <option value="add" <?= $action=="add" ? "selected" :"";?>>Ajouter</option>
-                        <option value="delete" <?= $action=="delete" ? "selected" :"";?>>Supprimer</option>
-                        <option value="clear" <?= $action=="clear" ? "selected" :"";?>>Supprimer tout</option>
-                        <option value="up-qtt" <?= $action=="up-qtt" ? "selected" :"";?>>Monter la quantité</option>
-                        <option value="down-qtt" <?= $action=="down-qtt" ? "selected" :"";?>>Descendre la quantité</option>
-                    </select>
-                    <button class="btn btn-outline-secondary" type="submit">Soumettre</button>
-                </div>
-            </p>
-
-        </form>
-        <?php
-        
-        if (isset($_GET["action"])) {
-            if ($_GET['action']=="add") {
-                echo <<<HTML
             <form action="traitement.php?action=add" method="post">
             <p>
                 <label>
@@ -93,35 +72,10 @@ function optionItem():string{
                 </label>
             </p>
             <p>
-                <input type="submit" name="submit" value="Ajouter le produit">
+                <button type="submit" class="btn btn-primary">Ajouter l'Objet</button>
             </p>
         </form>
-HTML;   
-            }elseif ($action=="delete") {
-                $options=optionItem();
-                echo <<<HTML
-        <form action="traitement.php?action=delete" method="post">
-            <p>
-                <select name="indice" class="form-select form-select-lg mb-3" aria-label="Large select example">
-                    $options
-                </select>
 
-                <button type="submit" name="submit" class="btn btn-primary">Supprimer</button>
-            </p>
-        </form>
-HTML;
-            }elseif ($action=="clear"){
-                echo <<<HTML
-            <form action="traitement.php?action=clear" method="post">
-                <label for="">Etes vous sur de vouloir tout supprimer ?</label>
-                <div class="input-goup mb-3">
-                    
-                    <button type="submit" name="submit" class="btn btn-primary">Supprimer tout</button>
-                </div>
-            </form>
-HTML;
-            }
-        }?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>

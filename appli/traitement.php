@@ -12,7 +12,7 @@ function isInProduct(string $name):bool{
     return false;
 }
 
-if(isset($_POST['submit'])){
+
 
     switch ($_GET['action']) {
         case 'add':
@@ -41,25 +41,49 @@ if(isset($_POST['submit'])){
             }
             break;
         case 'delete':
-            //code
-            var_dump($_POST);
-            if (isset($_SESSION['product'][(int)$_POST['indice']])) {
-                unset($_SESSION['product'][(int)$_POST['indice']]);
+            
+            if (isset($_SESSION['product'][(int)$_GET['indice']])) {
+                $_SESSION['success']="Vous avez bien supprimé l'élément ".$_SESSION['product'][$_GET['indice']]["name"];
+                unset($_SESSION['product'][(int)$_GET['indice']]);
+            }else {
+                $_SESSION['error']="Echec de la supprission . . .";
             }
-            header("Location:index.php?action=delete");
+            header("Location:recap.php");
             break;
         case 'clear':
-            $_SESSION['product']=[];
+            if (isset($_SESSION['product'])||$_SESSION['product']!=[]) {
+                $_SESSION['product']=[];
+                $_SESSION['success']="Vous avez bien tout supprimé !";
+            }else{
+                $_SESSION['error']="Il n'y avait rien a supprimer . . .";
+            }
+            header("Location:recap.php");
             break;
         case 'up-qtt':
-            //code
+            $indice = $_GET['indice'];
+            if (isset($_SESSION['product'][$indice])) {
+                $_SESSION['product'][$indice]['qtt']+=1;
+                $_SESSION['product'][$indice]['total']=$_SESSION['product'][$indice]['qtt']*$_SESSION['product'][$indice]['price'];
+                $_SESSION['success']="Vous avez bien modifier la quantité de ".$_SESSION['product'][$indice]['name'];
+            }else {
+                $_SESSION['error']="Le produit n'existe pas";
+            }
+            header("Location:recap.php");
             break;
         case 'down-qtt':
-            //code
+            $indice = $_GET['indice'];
+            if (isset($_SESSION['product'][$indice])) {
+                $_SESSION['product'][$indice]['qtt']-=1;
+                $_SESSION['product'][$indice]['total']=$_SESSION['product'][$indice]['qtt']*$_SESSION['product'][$indice]['price'];
+                $_SESSION['success']="Vous avez bien modifier la quantité de ".$_SESSION['product'][$indice]['name'];
+            }else {
+                $_SESSION['error']="Le produit n'existe pas";
+            }
+            header("Location:recap.php");
             break;
         default:
             header("Location:index.php");
             break;
     }
-}
+
 
