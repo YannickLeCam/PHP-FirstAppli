@@ -44,8 +44,10 @@
     //verification de l'existance de Serve'' sinon redrect to index
     if (!isset($_SESSION["product"]) || empty($_SESSION['product']) ) {
         echo "<p>Aucun produit disponible pour l'instant ... </p>";
+    }else {
+        echo createTabHtml();
     }
-    echo createTabHtml();
+    
 
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,5 +1,13 @@
 <?php
 session_start();
+if (isset($_SESSION['error'])) {
+    $messageError = $_SESSION['error'];
+    unset($_SESSION['error']);
+}
+if (isset($_SESSION['success'])) {
+    $messageSuccess = $_SESSION['success'];
+    unset($_SESSION['success']);
+}
 
 if (isset($_GET['action'])) {
     $action=$_GET['action'];
@@ -34,6 +42,14 @@ function optionItem():string{
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     </head>
     <body>
+        <?php
+            if (isset($messageError)) {
+                echo '<div class="alert alert-danger" role="alert">'.$messageError.'</div>';
+            }
+            if (isset($messageSuccess)) {
+                echo '<div class="alert alert-success" role="alert">'.$messageSuccess.'</div>';
+            }
+        ?>
         <h1>Ajouter un produit</h1>
         <form action="" method="get">
             <p class="">
@@ -51,7 +67,9 @@ function optionItem():string{
             </p>
 
         </form>
-        <?php if (isset($_GET["action"])) {
+        <?php
+        
+        if (isset($_GET["action"])) {
             if ($_GET['action']=="add") {
                 echo <<<HTML
             <form action="traitement.php?action=add" method="post">

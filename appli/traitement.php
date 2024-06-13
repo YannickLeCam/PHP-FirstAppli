@@ -1,6 +1,17 @@
 <?php
 session_start();
 
+function isInProduct(string $name):bool{
+    if (isset($_SESSION['product'])) {
+        foreach ($_SESSION['product'] as $product) {
+            if ($product['name']==$name) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 if(isset($_POST['submit'])){
 
     switch ($_GET['action']) {
@@ -12,14 +23,20 @@ if(isset($_POST['submit'])){
 
             if ($name && $price && $qtt) {
                 //On ajoute le nouvel objet dans la session pour pouvoir la récuperer a travers les differetes pages
-                $product = [
-                    "name"=>$name,
-                    "price"=>$price,
-                    "qtt"=>$qtt,
-                    "total"=>$price*$qtt
-                ];
+                if (isInProduct($name)) {
+                    $_SESSION['error']="L'objet a déja été initialisé ...";
+                }else {
+                    $product = [
+                        "name"=>$name,
+                        "price"=>$price,
+                        "qtt"=>$qtt,
+                        "total"=>$price*$qtt
+                    ];
+    
+                    $_SESSION['product'][]=$product;
+                    $_SESSION['success']="L'objet $name a bien été implémenté !";
+                }
 
-                $_SESSION['product'][]=$product;
                 header("Location:index.php?action=add");
             }
             break;
