@@ -11,9 +11,12 @@ Trois pages sont nécessaires à cela :
 1. index.php
    
 Présentera un formulaire permettant de renseigner : 
-o Le nom du produit 
-o Son prix unitaire
-o La quantité désirée
+
+- Le nom du produit 
+
+- Son prix unitaire
+
+- La quantité désirée
 
 2. traitement.php
    
