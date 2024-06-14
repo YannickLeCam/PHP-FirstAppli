@@ -52,7 +52,7 @@ function optionItem():string{
             }
         ?>
         <h1>Ajouter un produit</h1>
-            <form action="traitement.php?action=add" method="post">
+            <form action="traitement.php?action=add" method="post" enctype="multipart/form-data">
             <p>
                 <label>
                     Nom du produit :

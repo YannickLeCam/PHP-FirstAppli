@@ -15,11 +15,21 @@ function verificationImage(array $file):string{
     $size = $file['size'];
 
     //image trop grosse
-    if ($size > 40000) {
+    if ($size > 400000) {
         return "";
     }
-    $tabExtensionValide=["jpeg","png","svg"];
-    
+    $tabExtensionValide=["jpeg","png","svg","jpg"];
+    $extension=explode(".",$name);
+    $extension=strtolower(end($extension));
+    //Si l'extension du fichier n'est pas dans les valide on l'exclue directement
+    if (!in_array($extension,$tabExtensionValide)) {
+        return "";
+    }else {
+        // ici la fichier on est sur que c'est une image
+        move_uploaded_file($tmp_name,"./uploadimg/".$name);
+        return "./uploadimg/".$name;
+    }
+    return ""; //Si l'image a eu un pb un endroit car il n'a pas passé tout les tests il se retrouve ici (Juste sécurité).
 }
 
 function isInProduct(string $name):bool{
@@ -41,7 +51,9 @@ function isInProduct(string $name):bool{
             $name = htmlspecialchars($_POST['name']);
             $price = filter_input(INPUT_POST,"price",FILTER_VALIDATE_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
             $qtt = filter_input(INPUT_POST,"qtt", FILTER_VALIDATE_INT);
-            $image = verificationImage($_FILES['image']);
+            if (isset($_FILES['image'])) {
+                $image = verificationImage($_FILES['image']);
+            }
             if ($name && $price && $qtt) {
                 //On ajoute le nouvel objet dans la session pour pouvoir la récuperer a travers les differetes pages
                 if (isInProduct($name)) {
@@ -54,12 +66,12 @@ function isInProduct(string $name):bool{
                         "qtt"=>$qtt,
                         "total"=>$price*$qtt
                     ];
-    
+
                     $_SESSION['product'][]=$product;
                     $_SESSION['success']="L'objet $name a bien été implémenté !";
                 }
 
-                header("Location:index.php?action=add");
+                header("Location:index.php");
             }
             break;
         case 'delete':
@@ -90,6 +102,10 @@ function isInProduct(string $name):bool{
             }else {
                 $_SESSION['error']="Le produit n'existe pas";
             }
+            if (isset($_GET['from'])) {
+                header("Location:".$_GET['from']);
+                break;
+            }
             header("Location:recap.php");
             break;
         case 'down-qtt':
@@ -105,6 +121,10 @@ function isInProduct(string $name):bool{
                 }
             }else {
                 $_SESSION['error']="Le produit n'existe pas";
+            }
+            if (isset($_GET['from'])) {
+                header("Location:".$_GET['from']);
+                break;
             }
             header("Location:recap.php");
             break;
