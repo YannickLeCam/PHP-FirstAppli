@@ -28,6 +28,9 @@ if (isset($_SESSION['product'][$indiceProduit])) {
 
 </head>
 <body>
+    <?php
+    require './elements/nav.php';
+    ?>
     <div class="card" style="width: 18rem;">
         <img src="<?= $produit['photo']?>" class="card-img-top" alt="<?= $produit['photo']?>">
         <div class="card-body">
