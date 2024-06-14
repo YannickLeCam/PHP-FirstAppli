@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 if (isset($_SESSION['error'])) {
     $messageError = $_SESSION['error'];
     unset($_SESSION['error']);
@@ -15,6 +16,7 @@ if (isset($_GET['action'])) {
     $action="";
 }
 
+$title = "Ajout d'un produit";
 /**
  * Method optionItem créer la listes des options en mettant en value l'indice dans le tableau product et 
  *
@@ -32,25 +34,6 @@ function optionItem():string{
 
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Manipulation Produits</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    </head>
-    <body>
-        <?php
-            require 'elements/nav.php';
-            if (isset($messageError)) {
-                echo '<div class="alert alert-danger" role="alert">'.$messageError.'</div>';
-            }
-            if (isset($messageSuccess)) {
-                echo '<div class="alert alert-success" role="alert">'.$messageSuccess.'</div>';
-            }
-        ?>
         <h1>Ajouter un produit</h1>
             <form action="traitement.php?action=add" method="post" enctype="multipart/form-data">
             <p>
@@ -86,3 +69,7 @@ function optionItem():string{
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
+<?php
+    $content = ob_get_clean();
+    require_once './template.php';
+?>
