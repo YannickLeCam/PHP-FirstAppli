@@ -3,7 +3,7 @@ session_start();
 
 
 /**
- * Method verificationImage Cette fonction va vérifier si le fichier est bien une image 
+ * Cette fonction va vérifier si le fichier est bien une image si return "" alors une erreur est détecté et le message d'erreur est set-up deans SESSION['error']
  *
  * @param array $file [explicite description]
  *
@@ -16,6 +16,7 @@ function verificationImage(array $file):string{
 
     //image trop grosse
     if ($size > 400000) {
+        $_SESSION['error']="L'image est trop grosse . . .";
         return "";
     }
     $tabExtensionValide=["jpeg","png","svg","jpg"];
@@ -23,12 +24,14 @@ function verificationImage(array $file):string{
     $extension=strtolower(end($extension));
     //Si l'extension du fichier n'est pas dans les valide on l'exclue directement
     if (!in_array($extension,$tabExtensionValide)) {
+        $_SESSION['error']="Erreur sur l'extension du fichier envoyer nous reprenons que les format jpeg, png , svg ou jpg . . .";
         return "";
     }else {
         // ici la fichier on est sur que c'est une image
         move_uploaded_file($tmp_name,"./uploadimg/".$name);
         return "./uploadimg/".$name;
     }
+    $_SESSION['error']="Erreur inconnue sur image dans la fonction verificationImage . . .";
     return ""; //Si l'image a eu un pb un endroit car il n'a pas passé tout les tests il se retrouve ici (Juste sécurité).
 }
 
@@ -52,12 +55,28 @@ function isInProduct(string $name):bool{
             $price = filter_input(INPUT_POST,"price",FILTER_VALIDATE_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
             $qtt = filter_input(INPUT_POST,"qtt", FILTER_VALIDATE_INT);
             if (isset($_FILES['image'])) {
+                if ($_FILES['image']["error"]!=0) {
+                    $_SESSION["error"] = "Erreur dans l'upload de l'image : ".$_FILES['image']["error"]." Echec de l'ajout du produit";
+                    header("Location:index.php");
+                    break;
+                }
                 $image = verificationImage($_FILES['image']);
+                if ($image=="") {
+                    //les messages d'erreur sont set-up dans la fonction verificationImage()
+                    header("Location:index.php");
+                    break;
+                }
+            }else {
+                $_SESSION['error']="Error l'image est ilisible ou est manquante";
+                header("Location:index.php");
+                break;
             }
             if ($name && $price && $qtt) {
                 //On ajoute le nouvel objet dans la session pour pouvoir la récuperer a travers les differetes pages
                 if (isInProduct($name)) {
                     $_SESSION['error']="L'objet a déja été initialisé ...";
+                    header("Location:index.php");
+                    break;
                 }else {
                     $product = [
                         "name"=>$name,

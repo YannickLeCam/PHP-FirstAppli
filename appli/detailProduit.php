@@ -42,6 +42,16 @@ if (isset($_SESSION['product'][$indiceProduit])) {
             </ul>
         </div>
     </div>
+    <div class="card position-relative" style="width: 18rem;">
+        <?php
+            if ($indiceProduit>0) {
+                echo '<a href="./detailProduit.php?indice='.($indiceProduit-1).'" class="position-absolute start-0"> <button class="btn btn-primary">← '.($_SESSION['product'][($indiceProduit-1)]["name"]).'</button></a>';
+            }
+            if ($indiceProduit < count($_SESSION['product'])-1) {
+                echo '<a href="./detailProduit.php?indice='.($indiceProduit+1).'" class="position-absolute end-0"><button class="btn btn-primary">'.($_SESSION['product'][($indiceProduit+1)]["name"]).' →</button></a>';
+            }
+        ?>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
