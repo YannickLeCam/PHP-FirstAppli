@@ -13,7 +13,47 @@ if (isset($_SESSION['product'][$indiceProduit])) {
     header("Location:index.php");
 }
 
+/**
+ * trouverIndicePrecedent en cas de UNSET cela permet de recupérer l'élément précédant
+ *
+ * @param  int $indiceCourrant
+ * @return int
+ */
+function trouverIndicePrecedent(int $indiceCourrant):int{
+    if ($indiceCourrant==0) {
+        return end($_SESSION['product'])['indice'];
+    }
+    $stock = 0;
+    foreach ($_SESSION['product'] as $indice => $val) {
+       
+        if ($indice==$indiceCourrant) {
+            return $stock;
+        }
+        $stock=$indice;
+    }
+    
+    return 0;
+}
 
+/**
+ * trouverIndiceSuivant en cas de UNSET cela permet de récupérer l'élément suivant
+ *
+ * @param  int $indiceCourrant
+ * @return int
+ */
+function trouverIndiceSuivant(int $indiceCourrant):int{
+    $stop = 0;
+    foreach ($_SESSION['product'] as $indice => $val) {
+        if ($stop == 1) {
+            return $indice;
+        }
+        if ($indice==$indiceCourrant) {
+            $stop=1;
+        }
+    }
+    
+    return 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,12 +84,11 @@ if (isset($_SESSION['product'][$indiceProduit])) {
     </div>
     <div class="card position-relative" style="width: 18rem;">
         <?php
-            if ($indiceProduit>0) {
-                echo '<a href="./detailProduit.php?indice='.($indiceProduit-1).'" class="position-absolute start-0"> <button class="btn btn-primary">← '.($_SESSION['product'][($indiceProduit-1)]["name"]).'</button></a>';
-            }
-            if ($indiceProduit < count($_SESSION['product'])-1) {
-                echo '<a href="./detailProduit.php?indice='.($indiceProduit+1).'" class="position-absolute end-0"><button class="btn btn-primary">'.($_SESSION['product'][($indiceProduit+1)]["name"]).' →</button></a>';
-            }
+            $indicePrecedant = trouverIndicePrecedent($indiceProduit);
+            echo '<a href="./detailProduit.php?indice='.($indicePrecedant).'" class="position-absolute start-0"> <button class="btn btn-primary">← '.($_SESSION['product'][$indicePrecedant]["name"]).'</button></a>';
+            
+            $indiceSuivant = trouverIndiceSuivant($indiceProduit);
+            echo '<a href="./detailProduit.php?indice='.($indiceSuivant).'" class="position-absolute end-0"><button class="btn btn-primary">'.$_SESSION['product'][$indiceSuivant]["name"].' →</button></a>';
         ?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

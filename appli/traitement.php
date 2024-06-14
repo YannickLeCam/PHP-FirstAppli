@@ -79,6 +79,7 @@ function isInProduct(string $name):bool{
                     break;
                 }else {
                     $product = [
+                        "indice"=>count($_SESSION['product']),
                         "name"=>$name,
                         "photo"=>$image,
                         "price"=>$price,
